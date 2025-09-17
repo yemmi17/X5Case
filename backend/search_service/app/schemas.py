@@ -1,0 +1,1 @@
+# Модели для API (Pydantic/SQLModel)
