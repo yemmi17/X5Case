@@ -25,6 +25,22 @@ import {
     Wheat,
     Search
 } from "lucide-react"
+import { 
+    BeveragesSubCategory, 
+    BeveragesSubCategoryLabels, 
+    DairySubCategory, 
+    DairySubCategoryLabels, 
+    FishSeafoodSubCategory, 
+    FishSeafoodSubCategoryLabels, 
+    FruitsVegetablesSubCategory, 
+    FruitsVegetablesSubCategoryLabels, 
+    GrocerySubCategory, 
+    GrocerySubCategoryLabels, 
+    MeatPoultrySubCategory, 
+    MeatPoultrySubCategoryLabels, 
+    ProductCategory, 
+    ProductCategoryLabels 
+} from "@/config/category.config"
 
 const HomePage = () => {
     return (
@@ -50,68 +66,70 @@ const HomePage = () => {
                     <DropdownMenuSub>
                         <DropdownMenuSubTrigger className="flex items-center gap-2">
                             <Milk className="h-4 w-4 text-blue-600" />
-                            <span>Молочные продукты</span>
-            </DropdownMenuSubTrigger>
-            <DropdownMenuPortal>
-              <DropdownMenuSubContent>
-                <DropdownMenuLabel>По жирности</DropdownMenuLabel>
-                <DropdownMenuItem>0.5% - Обезжиренные</DropdownMenuItem>
-                <DropdownMenuItem>1.5% - Нежирные</DropdownMenuItem>
-                <DropdownMenuItem>2.5% - Классические</DropdownMenuItem>
-                <DropdownMenuItem>3.2% - Жирные</DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuLabel>Вид продукции</DropdownMenuLabel>
-                <DropdownMenuItem>
-                  <span className="h-4 w-4 mr-2">🧀</span>
-                  <span>Сыры</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <span className="h-4 w-4 mr-2">🥛</span>
-                  Молоко
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <span className="h-4 w-4 mr-2">🍦</span>
-                  Йогурты и десерты
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <span className="h-4 w-4 mr-2">🥚</span>
-                  Яйца
-                </DropdownMenuItem>
-              </DropdownMenuSubContent>
-            </DropdownMenuPortal>
-          </DropdownMenuSub>
+                            <span>{ProductCategoryLabels[ProductCategory.DAIRY]}</span>
+                        </DropdownMenuSubTrigger>
+                        <DropdownMenuPortal>
+                    <DropdownMenuSubContent>
+                        <DropdownMenuItem>{DairySubCategoryLabels[DairySubCategory.LOW_FAT]}</DropdownMenuItem>
+                        <DropdownMenuItem>{DairySubCategoryLabels[DairySubCategory.MEDIUM_FAT]}</DropdownMenuItem>
+                        <DropdownMenuItem>{DairySubCategoryLabels[DairySubCategory.CLASSIC_FAT]}</DropdownMenuItem>
+                        <DropdownMenuItem>{DairySubCategoryLabels[DairySubCategory.HIGH_FAT]}</DropdownMenuItem>
+
+                        <DropdownMenuSeparator />
+
+                        <DropdownMenuLabel>Вид продукции</DropdownMenuLabel>
+
+                        <DropdownMenuItem>
+                            <span className="h-4 w-4 mr-2">🧀</span>
+                            <span>{DairySubCategoryLabels[DairySubCategory.CHEESE]}</span>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem>
+                            <span className="h-4 w-4 mr-2">🥛</span>
+                            {DairySubCategoryLabels[DairySubCategory.MILK]}
+                        </DropdownMenuItem>
+                        <DropdownMenuItem>
+                            <span className="h-4 w-4 mr-2">🍦</span>
+                            {DairySubCategoryLabels[DairySubCategory.YOGURT_DESSERTS]}
+                        </DropdownMenuItem>
+                        <DropdownMenuItem>
+                            <span className="h-4 w-4 mr-2">🥚</span>
+                            {DairySubCategoryLabels[DairySubCategory.EGGS]}
+                        </DropdownMenuItem>
+                    </DropdownMenuSubContent>
+                </DropdownMenuPortal>
+            </DropdownMenuSub>
         </DropdownMenuGroup>
 
         <DropdownMenuSeparator />
 
         {/* Овощи и фрукты */}
         <DropdownMenuGroup>
-          <DropdownMenuSub>
-            <DropdownMenuSubTrigger className="flex items-center gap-2">
-              <Carrot className="h-4 w-4 text-orange-500" />
-              <span>Овощи и фрукты</span>
-            </DropdownMenuSubTrigger>
-            <DropdownMenuPortal>
+            <DropdownMenuSub>
+                <DropdownMenuSubTrigger className="flex items-center gap-2">
+                    <Carrot className="h-4 w-4 text-orange-500" />
+                    <span>{ProductCategoryLabels[ProductCategory.FRUITS_VEGETABLES]}</span>
+                </DropdownMenuSubTrigger>
+                <DropdownMenuPortal>
               <DropdownMenuSubContent>
                 <DropdownMenuItem>
-                  <span className="h-4 w-4 mr-2">🍏</span>
-                  Фрукты
+                    <span className="h-4 w-4 mr-2">🍏</span>
+                    {FruitsVegetablesSubCategoryLabels[FruitsVegetablesSubCategory.FRUITS]}
                 </DropdownMenuItem>
                 <DropdownMenuItem>
                   <span className="h-4 w-4 mr-2">🥕</span>
-                  Овощи
+                  {FruitsVegetablesSubCategoryLabels[FruitsVegetablesSubCategory.VEGETABLES]}
                 </DropdownMenuItem>
                 <DropdownMenuItem>
                   <span className="h-4 w-4 mr-2">🍒</span>
-                  Ягоды
+                  {FruitsVegetablesSubCategoryLabels[FruitsVegetablesSubCategory.BERRIES]}
                 </DropdownMenuItem>
                 <DropdownMenuItem>
                   <span className="h-4 w-4 mr-2">🥬</span>
-                  Зелень и салаты
+                  {FruitsVegetablesSubCategoryLabels[FruitsVegetablesSubCategory.GREENS_SALADS]}
                 </DropdownMenuItem>
                 <DropdownMenuItem>
                   <span className="h-4 w-4 mr-2">🌰</span>
-                  Орехи и сухофрукты
+                  {FruitsVegetablesSubCategoryLabels[FruitsVegetablesSubCategory.NUTS_DRIED_FRUITS]}
                 </DropdownMenuItem>
               </DropdownMenuSubContent>
             </DropdownMenuPortal>
@@ -125,29 +143,29 @@ const HomePage = () => {
           <DropdownMenuSub>
             <DropdownMenuSubTrigger className="flex items-center gap-2">
               <Beef className="h-4 w-4 text-red-500" />
-              <span>Мясо и птица</span>
+              <span>{ProductCategoryLabels[ProductCategory.MEAT_POULTRY]}</span>
             </DropdownMenuSubTrigger>
             <DropdownMenuPortal>
               <DropdownMenuSubContent>
                 <DropdownMenuItem>
                     <span className="h-4 w-4 mr-2">🐄</span> 
-                    Говядина
+                    {MeatPoultrySubCategoryLabels[MeatPoultrySubCategory.BEEF]}
                 </DropdownMenuItem>
                 <DropdownMenuItem>
                     <span className="h-4 w-4 mr-2">🐖</span>
-                    Свинина
+                    {MeatPoultrySubCategoryLabels[MeatPoultrySubCategory.PORK]}
                 </DropdownMenuItem>
                 <DropdownMenuItem>
                     <span className="h-4 w-4 mr-2">🐔</span> 
-                    Курица
+                    {MeatPoultrySubCategoryLabels[MeatPoultrySubCategory.CHICKEN]}
                 </DropdownMenuItem>
                 <DropdownMenuItem>
                     <span className="h-4 w-4 mr-2">🦃</span> 
-                    Индейка
+                    {MeatPoultrySubCategoryLabels[MeatPoultrySubCategory.TURKEY]}
                 </DropdownMenuItem>
                 <DropdownMenuItem>
                     <span className="h-4 w-4 mr-2">🍗</span>
-                    Колбасы и сосиски
+                    {MeatPoultrySubCategoryLabels[MeatPoultrySubCategory.SAUSAGES]}
                 </DropdownMenuItem>
               </DropdownMenuSubContent>
             </DropdownMenuPortal>
@@ -161,14 +179,20 @@ const HomePage = () => {
           <DropdownMenuSub>
             <DropdownMenuSubTrigger className="flex items-center gap-2">
               <Fish className="h-4 w-4 text-blue-400" />
-              <span>Рыба и морепродукты</span>
+              <span>{ProductCategoryLabels[ProductCategory.FISH_SEAFOOD]}</span>
             </DropdownMenuSubTrigger>
             <DropdownMenuPortal>
               <DropdownMenuSubContent>
-                <DropdownMenuItem><span className="h-4 w-4 mr-2">🐟</span> Свежая рыба</DropdownMenuItem>
-                <DropdownMenuItem><span className="h-4 w-4 mr-2">🧊</span> Замороженная рыба</DropdownMenuItem>
-                <DropdownMenuItem><span className="h-4 w-4 mr-2">🦐</span> Морепродукты</DropdownMenuItem>
-                <DropdownMenuItem><span className="h-4 w-4 mr-2">🥫</span> Консервы рыбные</DropdownMenuItem>
+                <DropdownMenuItem>
+                    <span className="h-4 w-4 mr-2">🐟</span> 
+                    {FishSeafoodSubCategoryLabels[FishSeafoodSubCategory.FRESH_FISH]}
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                        <span className="h-4 w-4 mr-2">🧊</span> 
+                        {FishSeafoodSubCategoryLabels[FishSeafoodSubCategory.FROZEN_FISH]}
+                    </DropdownMenuItem>
+                    <DropdownMenuItem><span className="h-4 w-4 mr-2">🦐</span>{FishSeafoodSubCategoryLabels[FishSeafoodSubCategory.SEAFOOD]}</DropdownMenuItem>
+                <DropdownMenuItem><span className="h-4 w-4 mr-2">🥫</span>{FishSeafoodSubCategoryLabels[FishSeafoodSubCategory.FISH_CANNED]}</DropdownMenuItem>
               </DropdownMenuSubContent>
             </DropdownMenuPortal>
           </DropdownMenuSub>
@@ -181,64 +205,96 @@ const HomePage = () => {
           <DropdownMenuSub>
             <DropdownMenuSubTrigger className="flex items-center gap-2">
               <Wheat className="h-4 w-4 text-amber-600" />
-              <span>Бакалея</span>
+              <span>{ProductCategoryLabels[ProductCategory.GROCERY]}</span>
             </DropdownMenuSubTrigger>
             <DropdownMenuPortal>
               <DropdownMenuSubContent>
-                <DropdownMenuItem><span className="h-4 w-4 mr-2">🍚</span> Крупы и макароны</DropdownMenuItem>
-                <DropdownMenuItem><span className="h-4 w-4 mr-2">🫘</span> Бобовые</DropdownMenuItem>
-                <DropdownMenuItem><span className="h-4 w-4 mr-2">🧂</span> Специи и приправы</DropdownMenuItem>
-                <DropdownMenuItem><span className="h-4 w-4 mr-2">🥫</span> Соусы и консервы</DropdownMenuItem>
-                <DropdownMenuItem><span className="h-4 w-4 mr-2">🍯</span> Мёд и варенье</DropdownMenuItem>
-              </DropdownMenuSubContent>
-            </DropdownMenuPortal>
-          </DropdownMenuSub>
-        </DropdownMenuGroup>
+                                        <DropdownMenuItem>
+                                            <span className="h-4 w-4 mr-2">🍚</span> 
+                                            {GrocerySubCategoryLabels[GrocerySubCategory.GRAINS_PASTA]}
+                                        </DropdownMenuItem>
+                                        <DropdownMenuItem>
+                                            <span className="h-4 w-4 mr-2">🫘</span> 
+                                            {GrocerySubCategoryLabels[GrocerySubCategory.LEGUMES]}
+                                        </DropdownMenuItem>
+                                        <DropdownMenuItem>
+                                            <span className="h-4 w-4 mr-2">🧂</span> 
+                                            {GrocerySubCategoryLabels[GrocerySubCategory.SPICES]}
+                                        </DropdownMenuItem>
+                                        <DropdownMenuItem>
+                                            <span className="h-4 w-4 mr-2">🥫</span> 
+                                            {GrocerySubCategoryLabels[GrocerySubCategory.SAUCES_CANNED]}
+                                        </DropdownMenuItem>
+                                        <DropdownMenuItem>
+                                            <span className="h-4 w-4 mr-2">🍯</span> 
+                                            {GrocerySubCategoryLabels[GrocerySubCategory.HONEY_JAM]}
+                                        </DropdownMenuItem>
+                                    </DropdownMenuSubContent>
+                                </DropdownMenuPortal>
+                            </DropdownMenuSub>
+                        </DropdownMenuGroup>
 
-        <DropdownMenuSeparator />
+                        <DropdownMenuSeparator />
 
-        {/* Хлеб и выпечка */}
-        <DropdownMenuGroup>
-          <DropdownMenuItem className="flex items-center gap-2">
-            <Croissant className="h-4 w-4 text-amber-800" />
-            <span>Хлеб и выпечка</span>
-          </DropdownMenuItem>
-        </DropdownMenuGroup>
+                        {/* Хлеб и выпечка */}
+                        <DropdownMenuGroup>
+                            <DropdownMenuItem className="flex items-center gap-2">
+                                <Croissant className="h-4 w-4 text-amber-800" />
+                                <span>{ProductCategoryLabels[ProductCategory.BAKERY]}</span>
+                            </DropdownMenuItem>
+                        </DropdownMenuGroup>
 
-        {/* Напитки */}
-        <DropdownMenuGroup>
-          <DropdownMenuSub>
-            <DropdownMenuSubTrigger className="flex items-center gap-2">
-              <Coffee className="h-4 w-4 text-brown-600" />
-              <span>Напитки</span>
-            </DropdownMenuSubTrigger>
-            <DropdownMenuPortal>
-              <DropdownMenuSubContent>
-                <DropdownMenuItem><span className="h-4 w-4 mr-2">💧</span> Вода</DropdownMenuItem>
-                <DropdownMenuItem><span className="h-4 w-4 mr-2">🥤</span> Соки и нектары</DropdownMenuItem>
-                <DropdownMenuItem><span className="h-4 w-4 mr-2">☕</span> Кофе и чай</DropdownMenuItem>
-                <DropdownMenuItem><span className="h-4 w-4 mr-2">🥛</span> Газированные напитки</DropdownMenuItem>
-                <DropdownMenuItem><span className="h-4 w-4 mr-2">🍷</span> Алкогольные напитки</DropdownMenuItem>
-              </DropdownMenuSubContent>
-            </DropdownMenuPortal>
-          </DropdownMenuSub>
-        </DropdownMenuGroup>
+                        {/* Напитки */}
+                        <DropdownMenuGroup>
+                            <DropdownMenuSub>
+                                <DropdownMenuSubTrigger className="flex items-center gap-2">
+                                    <Coffee className="h-4 w-4 text-brown-600" />
+                                    <span>{ProductCategoryLabels[ProductCategory.BEVERAGES]}</span>
+                                </DropdownMenuSubTrigger>
 
-                    <DropdownMenuSeparator />
+                                <DropdownMenuPortal>
 
-                    {/* Замороженные продукты */}
-                    <DropdownMenuGroup>
-                        <DropdownMenuItem className="flex items-center gap-2">
-                            <IceCream className="h-4 w-4 text-blue-300" />
-                            <span>Замороженные продукты</span>
-                        </DropdownMenuItem>
-                    </DropdownMenuGroup>
+                                    <DropdownMenuSubContent>
+                                        <DropdownMenuItem>
+                                            <span className="h-4 w-4 mr-2">💧</span>
+                                            {BeveragesSubCategoryLabels[BeveragesSubCategory.WATER]}
+                                        </DropdownMenuItem>
+                                        <DropdownMenuItem>
+                                            <span className="h-4 w-4 mr-2">🥤</span>
+                                            {BeveragesSubCategoryLabels[BeveragesSubCategory.JUICES]}
+                                        </DropdownMenuItem>
+                                        <DropdownMenuItem>
+                                            <span className="h-4 w-4 mr-2">☕</span>
+                                            {BeveragesSubCategoryLabels[BeveragesSubCategory.COFFEE_TEA]}
+                                        </DropdownMenuItem>
+                                        <DropdownMenuItem>
+                                            <span className="h-4 w-4 mr-2">🥛</span>
+                                            {BeveragesSubCategoryLabels[BeveragesSubCategory.SODA]}
+                                        </DropdownMenuItem>
+                                        <DropdownMenuItem>
+                                            <span className="h-4 w-4 mr-2">🍷</span> 
+                                            {BeveragesSubCategoryLabels[BeveragesSubCategory.ALCOHOL]}
+                                        </DropdownMenuItem>
+                                    </DropdownMenuSubContent>
+                                </DropdownMenuPortal>
+                            </DropdownMenuSub>
+                        </DropdownMenuGroup>
 
-                    {/* Сладости и снеки */}
-                    <DropdownMenuGroup>
-                        <DropdownMenuItem className="flex items-center gap-2">
+                        <DropdownMenuSeparator />
+
+                        {/* Замороженные продукты */}
+                        <DropdownMenuGroup>
+                            <DropdownMenuItem className="flex items-center gap-2">
+                                <IceCream className="h-4 w-4 text-blue-300" />
+                                <span>{ProductCategoryLabels[ProductCategory.FROZEN]}</span>
+                            </DropdownMenuItem>
+                        </DropdownMenuGroup>
+
+                        {/* Сладости и снеки */}
+                        <DropdownMenuGroup>
+                            <DropdownMenuItem className="flex items-center gap-2">
                                 <Sparkles className="h-4 w-4 text-yellow-500" />
-                                <span>Сладости и снеки</span>
+                                <span>{ProductCategoryLabels[ProductCategory.SWEETS_SNACKS]}</span>
                             </DropdownMenuItem>
                         </DropdownMenuGroup>
                     </DropdownMenuContent>
