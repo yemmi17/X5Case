@@ -174,174 +174,174 @@ export const ProductCategoriesDropdown = ({
                                     ))}
                                 </DropdownMenuSubContent>
                             </DropdownMenuPortal>
-            </DropdownMenuSub>
-          </DropdownMenuGroup>
+                        </DropdownMenuSub>
+                    </DropdownMenuGroup>
 
-          <DropdownMenuSeparator />
+                    <DropdownMenuSeparator />
 
-          {/* Овощи и фрукты */}
-          <DropdownMenuGroup>
-            <DropdownMenuSub>
-              <DropdownMenuSubTrigger className="flex items-center gap-2">
-                <Carrot className="h-4 w-4 text-orange-500" />
-                <span>{ProductCategoryLabels[ProductCategory.FRUITS_VEGETABLES]}</span>
-              </DropdownMenuSubTrigger>
-              <DropdownMenuPortal>
-                <DropdownMenuSubContent>
-                  {Object.values(FruitsVegetablesSubCategory).map((subCategory) => (
-                    <DropdownMenuItem
-                      key={subCategory}
-                      onSelect={() => handleCategorySelect(ProductCategory.FRUITS_VEGETABLES, subCategory)}
-                      className={isCategorySelected(ProductCategory.FRUITS_VEGETABLES, subCategory) ? 'bg-accent' : ''}
-                    >
-                      <span className="h-4 w-4 mr-2">
-                        {subCategory === FruitsVegetablesSubCategory.FRUITS && '🍏'}
-                        {subCategory === FruitsVegetablesSubCategory.VEGETABLES && '🥕'}
-                        {subCategory === FruitsVegetablesSubCategory.BERRIES && '🍒'}
-                        {subCategory === FruitsVegetablesSubCategory.GREENS_SALADS && '🥬'}
-                        {subCategory === FruitsVegetablesSubCategory.NUTS_DRIED_FRUITS && '🌰'}
-                      </span>
-                      {FruitsVegetablesSubCategoryLabels[subCategory]}
-                    </DropdownMenuItem>
-                  ))}
-                </DropdownMenuSubContent>
-              </DropdownMenuPortal>
-            </DropdownMenuSub>
-          </DropdownMenuGroup>
+                    {/* Овощи и фрукты */}
+                    <DropdownMenuGroup>
+                        <DropdownMenuSub>
+                            <DropdownMenuSubTrigger className="flex items-center gap-2">
+                                <Carrot className="h-4 w-4 text-orange-500" />
+                                <span>{ProductCategoryLabels[ProductCategory.FRUITS_VEGETABLES]}</span>
+                            </DropdownMenuSubTrigger>
+                            <DropdownMenuPortal>
+                                <DropdownMenuSubContent>
+                                    {Object.values(FruitsVegetablesSubCategory).map((subCategory) => (
+                                        <DropdownMenuItem
+                                            key={subCategory}
+                                            onSelect={() => handleCategorySelect(ProductCategory.FRUITS_VEGETABLES, subCategory)}
+                                            className={isCategorySelected(ProductCategory.FRUITS_VEGETABLES, subCategory) ? 'bg-accent' : ''}
+                                        >
+                                            <span className="h-4 w-4 mr-2">
+                                                {subCategory === FruitsVegetablesSubCategory.FRUITS && '🍏'}
+                                                {subCategory === FruitsVegetablesSubCategory.VEGETABLES && '🥕'}
+                                                {subCategory === FruitsVegetablesSubCategory.BERRIES && '🍒'}
+                                                {subCategory === FruitsVegetablesSubCategory.GREENS_SALADS && '🥬'}
+                                                {subCategory === FruitsVegetablesSubCategory.NUTS_DRIED_FRUITS && '🌰'}
+                                            </span>
+                                            {FruitsVegetablesSubCategoryLabels[subCategory]}
+                                        </DropdownMenuItem>
+                                    ))}
+                                </DropdownMenuSubContent>
+                            </DropdownMenuPortal>
+                        </DropdownMenuSub>
+                    </DropdownMenuGroup>
 
-          <DropdownMenuSeparator />
+                    <DropdownMenuSeparator />
 
-          {/* Мясо и птица */}
-          <DropdownMenuGroup>
-            <DropdownMenuSub>
-              <DropdownMenuSubTrigger className="flex items-center gap-2">
-                <Beef className="h-4 w-4 text-red-500" />
-                <span>{ProductCategoryLabels[ProductCategory.MEAT_POULTRY]}</span>
-              </DropdownMenuSubTrigger>
-              <DropdownMenuPortal>
-                <DropdownMenuSubContent>
-                  {Object.values(MeatPoultrySubCategory).map((subCategory) => (
-                    <DropdownMenuItem
-                      key={subCategory}
-                      onSelect={() => handleCategorySelect(ProductCategory.MEAT_POULTRY, subCategory)}
-                      className={isCategorySelected(ProductCategory.MEAT_POULTRY, subCategory) ? 'bg-accent' : ''}
-                    >
-                      <span className="h-4 w-4 mr-2">
-                        {subCategory === MeatPoultrySubCategory.BEEF && '🐄'}
-                        {subCategory === MeatPoultrySubCategory.PORK && '🐖'}
-                        {subCategory === MeatPoultrySubCategory.CHICKEN && '🐔'}
-                        {subCategory === MeatPoultrySubCategory.TURKEY && '🦃'}
-                        {subCategory === MeatPoultrySubCategory.SAUSAGES && '🍗'}
-                      </span>
-                      {MeatPoultrySubCategoryLabels[subCategory]}
-                    </DropdownMenuItem>
-                  ))}
-                </DropdownMenuSubContent>
-              </DropdownMenuPortal>
-            </DropdownMenuSub>
-          </DropdownMenuGroup>
+                    {/* Мясо и птица */}
+                    <DropdownMenuGroup>
+                        <DropdownMenuSub>
+                            <DropdownMenuSubTrigger className="flex items-center gap-2">
+                                <Beef className="h-4 w-4 text-red-500" />
+                                <span>{ProductCategoryLabels[ProductCategory.MEAT_POULTRY]}</span>
+                            </DropdownMenuSubTrigger>
+                            <DropdownMenuPortal>
+                                <DropdownMenuSubContent>
+                                    {Object.values(MeatPoultrySubCategory).map((subCategory) => (
+                                        <DropdownMenuItem
+                                            key={subCategory}
+                                            onSelect={() => handleCategorySelect(ProductCategory.MEAT_POULTRY, subCategory)}
+                                            className={isCategorySelected(ProductCategory.MEAT_POULTRY, subCategory) ? 'bg-accent' : ''}
+                                        >
+                                            <span className="h-4 w-4 mr-2">
+                                                {subCategory === MeatPoultrySubCategory.BEEF && '🐄'}
+                                                {subCategory === MeatPoultrySubCategory.PORK && '🐖'}
+                                                {subCategory === MeatPoultrySubCategory.CHICKEN && '🐔'}
+                                                {subCategory === MeatPoultrySubCategory.TURKEY && '🦃'}
+                                                {subCategory === MeatPoultrySubCategory.SAUSAGES && '🍗'}
+                                            </span>
+                                            {MeatPoultrySubCategoryLabels[subCategory]}
+                                        </DropdownMenuItem>
+                                    ))}
+                                </DropdownMenuSubContent>
+                            </DropdownMenuPortal>
+                        </DropdownMenuSub>
+                    </DropdownMenuGroup>
 
-          <DropdownMenuSeparator />
+                    <DropdownMenuSeparator />
 
-          {/* Рыба и морепродукты */}
-          <DropdownMenuGroup>
-            <DropdownMenuSub>
-              <DropdownMenuSubTrigger className="flex items-center gap-2">
-                <Fish className="h-4 w-4 text-blue-400" />
-                <span>{ProductCategoryLabels[ProductCategory.FISH_SEAFOOD]}</span>
-              </DropdownMenuSubTrigger>
-              <DropdownMenuPortal>
-                <DropdownMenuSubContent>
-                  {Object.values(FishSeafoodSubCategory).map((subCategory) => (
-                    <DropdownMenuItem
-                      key={subCategory}
-                      onSelect={() => handleCategorySelect(ProductCategory.FISH_SEAFOOD, subCategory)}
-                      className={isCategorySelected(ProductCategory.FISH_SEAFOOD, subCategory) ? 'bg-accent' : ''}
-                    >
-                      <span className="h-4 w-4 mr-2">
-                        {subCategory === FishSeafoodSubCategory.FRESH_FISH && '🐟'}
-                        {subCategory === FishSeafoodSubCategory.FROZEN_FISH && '🧊'}
-                        {subCategory === FishSeafoodSubCategory.SEAFOOD && '🦐'}
-                        {subCategory === FishSeafoodSubCategory.FISH_CANNED && '🥫'}
-                      </span>
-                      {FishSeafoodSubCategoryLabels[subCategory]}
-                    </DropdownMenuItem>
-                  ))}
-                </DropdownMenuSubContent>
-              </DropdownMenuPortal>
-                </DropdownMenuSub>
-          </DropdownMenuGroup>
+                    {/* Рыба и морепродукты */}
+                    <DropdownMenuGroup>
+                        <DropdownMenuSub>
+                            <DropdownMenuSubTrigger className="flex items-center gap-2">
+                                <Fish className="h-4 w-4 text-blue-400" />
+                                <span>{ProductCategoryLabels[ProductCategory.FISH_SEAFOOD]}</span>
+                            </DropdownMenuSubTrigger>
+                            <DropdownMenuPortal>
+                                <DropdownMenuSubContent>
+                                    {Object.values(FishSeafoodSubCategory).map((subCategory) => (
+                                        <DropdownMenuItem
+                                            key={subCategory}
+                                            onSelect={() => handleCategorySelect(ProductCategory.FISH_SEAFOOD, subCategory)}
+                                            className={isCategorySelected(ProductCategory.FISH_SEAFOOD, subCategory) ? 'bg-accent' : ''}
+                                        >
+                                            <span className="h-4 w-4 mr-2">
+                                                {subCategory === FishSeafoodSubCategory.FRESH_FISH && '🐟'}
+                                                {subCategory === FishSeafoodSubCategory.FROZEN_FISH && '🧊'}
+                                                {subCategory === FishSeafoodSubCategory.SEAFOOD && '🦐'}
+                                                {subCategory === FishSeafoodSubCategory.FISH_CANNED && '🥫'}
+                                            </span>
+                                            {FishSeafoodSubCategoryLabels[subCategory]}
+                                        </DropdownMenuItem>
+                                    ))}
+                                </DropdownMenuSubContent>
+                            </DropdownMenuPortal>
+                        </DropdownMenuSub>
+                    </DropdownMenuGroup>
 
-          <DropdownMenuSeparator />
+                    <DropdownMenuSeparator />
 
-          {/* Бакалея */}
-          <DropdownMenuGroup>
-            <DropdownMenuSub>
-              <DropdownMenuSubTrigger className="flex items-center gap-2">
-                <Wheat className="h-4 w-4 text-amber-600" />
-                <span>{ProductCategoryLabels[ProductCategory.GROCERY]}</span>
-              </DropdownMenuSubTrigger>
-              <DropdownMenuPortal>
-                <DropdownMenuSubContent>
-                  {Object.values(GrocerySubCategory).map((subCategory) => (
-                    <DropdownMenuItem
-                      key={subCategory}
-                      onSelect={() => handleCategorySelect(ProductCategory.GROCERY, subCategory)}
-                      className={isCategorySelected(ProductCategory.GROCERY, subCategory) ? 'bg-accent' : ''}
-                    >
-                      <span className="h-4 w-4 mr-2">
-                        {subCategory === GrocerySubCategory.GRAINS_PASTA && '🍚'}
-                        {subCategory === GrocerySubCategory.LEGUMES && '🫘'}
-                        {subCategory === GrocerySubCategory.SPICES && '🧂'}
-                        {subCategory === GrocerySubCategory.SAUCES_CANNED && '🥫'}
-                        {subCategory === GrocerySubCategory.HONEY_JAM && '🍯'}
-                      </span>
-                      {GrocerySubCategoryLabels[subCategory]}
-                    </DropdownMenuItem>
-                  ))}
-                </DropdownMenuSubContent>
-              </DropdownMenuPortal>
-            </DropdownMenuSub>
-          </DropdownMenuGroup>
+                    {/* Бакалея */}
+                    <DropdownMenuGroup>
+                        <DropdownMenuSub>
+                            <DropdownMenuSubTrigger className="flex items-center gap-2">
+                                <Wheat className="h-4 w-4 text-amber-600" />
+                                <span>{ProductCategoryLabels[ProductCategory.GROCERY]}</span>
+                            </DropdownMenuSubTrigger>
+                            <DropdownMenuPortal>
+                                <DropdownMenuSubContent>
+                                    {Object.values(GrocerySubCategory).map((subCategory) => (
+                                        <DropdownMenuItem
+                                        key={subCategory}
+                                        onSelect={() => handleCategorySelect(ProductCategory.GROCERY, subCategory)}
+                                        className={isCategorySelected(ProductCategory.GROCERY, subCategory) ? 'bg-accent' : ''}
+                                        >
+                                        <span className="h-4 w-4 mr-2">
+                                            {subCategory === GrocerySubCategory.GRAINS_PASTA && '🍚'}
+                                            {subCategory === GrocerySubCategory.LEGUMES && '🫘'}
+                                            {subCategory === GrocerySubCategory.SPICES && '🧂'}
+                                            {subCategory === GrocerySubCategory.SAUCES_CANNED && '🥫'}
+                                            {subCategory === GrocerySubCategory.HONEY_JAM && '🍯'}
+                                        </span>
+                                        {GrocerySubCategoryLabels[subCategory]}
+                                        </DropdownMenuItem>
+                                    ))}
+                                </DropdownMenuSubContent>
+                            </DropdownMenuPortal>
+                        </DropdownMenuSub>
+                    </DropdownMenuGroup>
 
-          <DropdownMenuSeparator />
+                    <DropdownMenuSeparator />
 
-          {/* Хлеб и выпечка */}
-          <DropdownMenuGroup>
-            <DropdownMenuItem
-              onSelect={() => handleCategorySelect(ProductCategory.BAKERY)}
-              className={isCategorySelected(ProductCategory.BAKERY) ? 'bg-accent' : ''}
-            >
-              <Croissant className="h-4 w-4 text-amber-800 mr-2" />
-              {ProductCategoryLabels[ProductCategory.BAKERY]}
-            </DropdownMenuItem>
-          </DropdownMenuGroup>
+                    {/* Хлеб и выпечка */}
+                    <DropdownMenuGroup>
+                        <DropdownMenuItem
+                            onSelect={() => handleCategorySelect(ProductCategory.BAKERY)}
+                            className={isCategorySelected(ProductCategory.BAKERY) ? 'bg-accent' : ''}
+                        >
+                            <Croissant className="h-4 w-4 text-amber-800 mr-2" />
+                            {ProductCategoryLabels[ProductCategory.BAKERY]}
+                        </DropdownMenuItem>
+                    </DropdownMenuGroup>
 
-          {/* Напитки */}
-          <DropdownMenuGroup>
-            <DropdownMenuSub>
-              <DropdownMenuSubTrigger className="flex items-center gap-2">
-                <Coffee className="h-4 w-4 text-brown-600" />
-                <span>{ProductCategoryLabels[ProductCategory.BEVERAGES]}</span>
-              </DropdownMenuSubTrigger>
-              <DropdownMenuPortal>
-                <DropdownMenuSubContent>
-                  {Object.values(BeveragesSubCategory).map((subCategory) => (
-                    <DropdownMenuItem
-                      key={subCategory}
-                      onSelect={() => handleCategorySelect(ProductCategory.BEVERAGES, subCategory)}
-                      className={isCategorySelected(ProductCategory.BEVERAGES, subCategory) ? 'bg-accent' : ''}
-                    >
-                      <span className="h-4 w-4 mr-2">
-                        {subCategory === BeveragesSubCategory.WATER && '💧'}
-                        {subCategory === BeveragesSubCategory.JUICES && '🥤'}
-                        {subCategory === BeveragesSubCategory.COFFEE_TEA && '☕'}
-                        {subCategory === BeveragesSubCategory.SODA && '🥛'}
-                        {subCategory === BeveragesSubCategory.ALCOHOL && '🍷'}
-                      </span>
-                      {BeveragesSubCategoryLabels[subCategory]}
-                    </DropdownMenuItem>
-                        ))}
+                    {/* Напитки */}
+                    <DropdownMenuGroup>
+                        <DropdownMenuSub>
+                            <DropdownMenuSubTrigger className="flex items-center gap-2">
+                                <Coffee className="h-4 w-4 text-brown-600" />
+                                <span>{ProductCategoryLabels[ProductCategory.BEVERAGES]}</span>
+                            </DropdownMenuSubTrigger>
+                            <DropdownMenuPortal>
+                        <DropdownMenuSubContent>
+                            {Object.values(BeveragesSubCategory).map((subCategory) => (
+                                <DropdownMenuItem
+                                    key={subCategory}
+                                    onSelect={() => handleCategorySelect(ProductCategory.BEVERAGES, subCategory)}
+                                    className={isCategorySelected(ProductCategory.BEVERAGES, subCategory) ? 'bg-accent' : ''}
+                                >
+                                    <span className="h-4 w-4 mr-2">
+                                        {subCategory === BeveragesSubCategory.WATER && '💧'}
+                                        {subCategory === BeveragesSubCategory.JUICES && '🥤'}
+                                        {subCategory === BeveragesSubCategory.COFFEE_TEA && '☕'}
+                                        {subCategory === BeveragesSubCategory.SODA && '🥛'}
+                                        {subCategory === BeveragesSubCategory.ALCOHOL && '🍷'}
+                                    </span>
+                                    {BeveragesSubCategoryLabels[subCategory]}
+                                </DropdownMenuItem>
+                            ))}
                         </DropdownMenuSubContent>
                     </DropdownMenuPortal>
                 </DropdownMenuSub>
