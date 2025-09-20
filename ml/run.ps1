@@ -1,8 +1,15 @@
 # Имя образа
 $IMAGE_NAME = "ml"
 
-Write-Host "Building Docker image: $IMAGE_NAME"
-docker build -t $IMAGE_NAME .
+# Проверка наличия образа
+$imageExists = docker images -q $IMAGE_NAME
+
+if (-not $imageExists) {
+    Write-Host "Image $IMAGE_NAME not found. Building Docker image..."
+    docker build -t $IMAGE_NAME .
+} else {
+    Write-Host "Image $IMAGE_NAME already exists. Skipping build."
+}
 
 Write-Host "Running container with GPU access and mounting project directory..."
 # --gpus all: даёт контейнеру доступ ко всем GPU
