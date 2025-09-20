@@ -33,10 +33,10 @@ test.ipynb - тестирование модели
 {
   "input": "абрикосы 500г global village",
   "entities": [
-    {"start": 0, "end": 8, "label": "B-TYPE", "text": "абрикосы"},
-    {"start": 9, "end": 13, "label": "B-VOLUME", "text": "500г"},
-    {"start": 14, "end": 20, "label": "B-BRAND", "text": "global"},
-    {"start": 21, "end": 28, "label": "I-BRAND", "text": "village"}
+    {"start_index": 0, "end_index": 8, "entity": "B-TYPE"},
+    {"start_index": 9, "end_index": 13, "entity": "B-VOLUME"},
+    {"start_index": 14, "end_index": 20, "entity": "B-BRAND"},
+    {"start_index": 21, "end_index": 28, "entity": "I-BRAND"}
   ]
 }
 ```
@@ -64,7 +64,7 @@ test.ipynb - тестирование модели
 {
   "input": "user input string",
   "entities": [
-    {"start": 0, "end": 7, "label": "B-TYPE", "text": "авокадо"}
+    {"start_index": 0, "end_index": 7, "entity": "B-TYPE"}
   ]
 }
 ```
@@ -84,10 +84,9 @@ test.ipynb - тестирование модели
 
 Каждая сущность в entities содержит:
 
-- **start** — индекс начала сущности в строке.
-- **end** — индекс конца.
-- **label** — тип сущности, например, 'B-TYPE', 'B-BRAND', 'B-VOLUME', 'B-PERCENT'.
-- **text** — сам фрагмент текста, попавший под эту сущность.
+- **start_index** — индекс начала сущности в строке.
+- **end_index** — индекс конца.
+- **entity** — тип сущности, например, 'B-TYPE', 'B-BRAND', 'B-VOLUME', 'B-PERCENT'.
 
 ***
 
@@ -107,10 +106,10 @@ test.ipynb - тестирование модели
 {
   "input": "сыр Hochland 100г 45%",
   "entities": [
-    {"start": 0, "end": 3, "label": "B-TYPE", "text": "сыр"},
-    {"start": 4, "end": 12, "label": "B-BRAND", "text": "Hochland"},
-    {"start": 13, "end": 17, "label": "B-VOLUME", "text": "100г"},
-    {"start": 18, "end": 21, "label": "B-PERCENT", "text": "45%"}
+    {"start_index": 0, "end_index": 3, "entity": "B-TYPE"},
+    {"start_index": 4, "end_index": 12, "entity": "B-BRAND"},
+    {"start_index": 13, "end_index": 17, "entity": "B-VOLUME"},
+    {"start_index": 18, "end_index": 21, "entity": "B-PERCENT"}
   ]
 }
 ```
