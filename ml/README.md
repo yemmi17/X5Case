@@ -23,7 +23,7 @@ test.ipynb - тестирование модели
 
 ```json
 {
-  "query": "абрикосы 500г global village"
+  "input": "абрикосы 500г global village"
 }
 ```
 
@@ -54,7 +54,7 @@ test.ipynb - тестирование модели
 
 ```json
 {
-  "query": "user input string"
+  "input": "user input string"
 }
 ```
 
@@ -96,7 +96,7 @@ test.ipynb - тестирование модели
 
 ```json
 {
-  "query": "сыр Hochland 100г 45%"
+  "input": "сыр Hochland 100г 45%"
 }
 ```
 
