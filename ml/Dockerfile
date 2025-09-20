@@ -1,21 +1,12 @@
 FROM nvidia/cuda:13.0.0-base-ubuntu22.04
 
-RUN apt-get update && apt-get install -y \
-    python3 \
-    python3-pip \
-    python3-venv \
-    build-essential \
-    && rm -rf /var/lib/apt/lists/*
-RUN pip3 install uv
+# Заменить latest на что-то другое желательно
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
 WORKDIR /app
 
-COPY pyproject.toml .
-COPY uv.lock .
+COPY uv.lock pyproject.toml /app/
 
-RUN uv venv
-RUN uv pip install -r uv.lock
+RUN uv sync --frozen --no-dev
 
-COPY main.py .
-
-CMD ["/app/.venv/bin/python3", "main.py"]
+COPY main.py /app
