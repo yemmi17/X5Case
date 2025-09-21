@@ -10,7 +10,7 @@ WORKDIR /app
 # Это кэшируется, чтобы не переустанавливать зависимости при каждом изменении кода
 COPY poetry.lock pyproject.toml ./
 
-RUN poetry config virtualenvs.create false && poetry install --no-root --no-dev
+RUN poetry config virtualenvs.create false && poetry install --no-root --only main
 
 # Копируем исходный код приложения
 COPY . .
