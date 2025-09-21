@@ -18,7 +18,7 @@
 - config_fixed.cfg - базовая модель для CPU
 - config_transformer.cfg - трансформер для GPU
 
-Для запуска обучения на gpu команда `uv run python -m spacy train configs/config_transformer.cfg --gpu-id 0 --output ./model`
+Для запуска обучения на gpu команда `uv run python -m spacy train configs/config_transformer.cfg --gpu-id 0 --output ./models`
 Остальное [тут](https://spacy.io/usage/training)
 
 ---
