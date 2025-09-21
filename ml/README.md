@@ -11,7 +11,7 @@
 2) Запуск образа `docker run -it --gpus all --rm ml /bin/bash`
 3) Пересборка образа `docker build -t ml .`
 
-## Описание файлов
+## Training
 ### configs
 Для Quickstart обучения spacy нужны конфиг файлы.
 Пока только обучение с нуля.
@@ -20,6 +20,21 @@
 
 Для запуска обучения на gpu команда `uv run python -m spacy train configs/config_transformer.cfg --gpu-id 0 --output ./models`
 Остальное [тут](https://spacy.io/usage/training)
+
+### Возобновление обучения через sourced components
+
+Чтобы продолжить обучение с места остановки, нужно изменить конфиг, используя сохранённую модель как источник:
+
+```cfg
+[components.transformer]
+source = "models/model-best"
+
+[components.ner] 
+source = "models/model-best"
+component = "ner"
+```
+
+Уберите все настройки `factory` и `model` из этих компонентов — они загрузятся из сохранённой модели.
 
 ---
 
