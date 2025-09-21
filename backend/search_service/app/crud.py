@@ -22,6 +22,7 @@ def get_product_by_id(*, session: Session, product_id: int) -> Optional[Product]
     return session.get(Product, product_id)
 
 
+# TODO: Пока метод фильтрует только по категориям
 def get_products(
     *, session: Session, skip: int = 0, limit: int = 100, category: Optional[str] = None
 ) -> List[Product]:
