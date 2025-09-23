@@ -12,4 +12,7 @@ dependencies = [
     "setuptools>=80.9.0",
     "spacy[cuda12x,lookups,transformers]>=3.8.7",
     "wheel>=0.45.1",
+    "fastapi>=0.111.0",
+    "uvicorn[standard]>=0.29.0",
+    "pydantic>=2.7.1"
 ]
