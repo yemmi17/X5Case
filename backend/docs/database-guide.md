@@ -1,26 +1,27 @@
 # Краткое руководство по работе с БД
 
-## Запуск базы данных
+## Запуск базы данных (вместе со всеми сервисами)
 ```bash
 cd /Users/sergeyshorin/Documents/development/X5Case/backend
-docker-compose up -d db
+docker compose -f docker-compose.dev.yml up -d --build
 ```
 
 ## Заполнение тестовыми данными
 ```bash
 cd /Users/sergeyshorin/Documents/development/X5Case/backend
-docker-compose run --rm \
-  -e POSTGRES_USER=myuser \
-  -e POSTGRES_PASSWORD=mypassword \
-  -e POSTGRES_DB=ner_db \
-  -e PYTHONPATH=/app \
-  search_service python scripts/seed.py
+docker compose -f docker-compose.dev.yml exec search_service \
+  poetry run python -m scripts.seed
+```
+Альтернатива (если требуется прямой запуск файла):
+```bash
+docker compose -f docker-compose.dev.yml exec -e PYTHONPATH=/app search_service \
+  poetry run python scripts/seed.py
 ```
 
 ## Подключение к базе данных
 ```bash
 cd /Users/sergeyshorin/Documents/development/X5Case/backend
-docker-compose exec db psql -U myuser -d ner_db
+docker compose -f docker-compose.dev.yml exec db psql -U myuser -d ner_db
 ```
 
 ## Просмотр товаров
@@ -41,21 +42,15 @@ docker run --rm --network host -e PGPASSWORD=mypassword postgres:15-alpine psql 
 ## Применение миграций
 ```bash
 cd /Users/sergeyshorin/Documents/development/X5Case/backend
-docker-compose run --rm \
-  -e POSTGRES_USER=myuser \
-  -e POSTGRES_PASSWORD=mypassword \
-  -e POSTGRES_DB=ner_db \
-  search_service alembic upgrade head
+docker compose -f docker-compose.dev.yml exec search_service \
+  poetry run alembic upgrade head
 ```
 
 ## Создание новой миграции
 ```bash
 cd /Users/sergeyshorin/Documents/development/X5Case/backend
-docker-compose run --rm \
-  -e POSTGRES_USER=myuser \
-  -e POSTGRES_PASSWORD=mypassword \
-  -e POSTGRES_DB=ner_db \
-  search_service alembic revision --autogenerate -m "Описание изменений"
+docker compose -f docker-compose.dev.yml exec search_service \
+  poetry run alembic revision --autogenerate -m "Описание изменений"
 ```
 
 ## Параметры для DBeaver
