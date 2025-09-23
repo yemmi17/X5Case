@@ -1,0 +1,65 @@
+version: '3.9'
+
+services:
+  # --- База данных PostgreSQL ---
+  db:
+    image: postgres:15-alpine
+    container_name: ner_project_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    ports:
+      - "5433:5432" # Пробрасываем порт для удобства подключения к БД с локальной машины
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # --- Сервис Поиска ---
+  search_service:
+    container_name: search_service
+    build: ./search_service # Указываем путь к Dockerfile
+    command: poetry run uvicorn app.main:app --host 0.0.0.0 --port 8002 --reload
+    volumes:
+      - ./search_service:/app # Синхронизируем код для hot-reload
+    ports:
+      - "8002:8002"
+    env_file:
+      - .env
+    depends_on:
+      db:
+        condition: service_healthy # Запустится только после того, как БД будет готова
+
+  # --- ML-сервис (NER) --- ЗАГЛУШКА mock_ner_service
+  ner_service:
+    container_name: ner_service
+    build: ./mock_ner_service  # <-- Указываем на нашу заглушку
+    command: poetry run uvicorn app.main:app --host 0.0.0.0 --port 8001 --reload
+    volumes:
+      - ./mock_ner_service:/app # <-- Монтируем ее код
+    ports:
+      - "8001:8001"
+    env_file:
+      - .env
+
+  # --- API Gateway ---
+  api_gateway:
+    container_name: api_gateway
+    build: ./api_gateway
+    command: poetry run uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    volumes:
+      - ./api_gateway:/app
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    depends_on:
+      - search_service
+      - ner_service
+
+volumes:
+  postgres_data:

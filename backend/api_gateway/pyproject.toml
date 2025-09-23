@@ -1,0 +1,19 @@
+[project]
+name = "api-gateway"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "shorins",email = "mighty.shorin@yandex.ru"}
+]
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi[all] (>=0.116.2,<0.117.0)",
+    "httpx (>=0.28.1,<0.29.0)",
+    "pydantic-settings (>=2.10.1,<3.0.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
