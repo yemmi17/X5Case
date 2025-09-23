@@ -1,0 +1,67 @@
+version: '3.9'
+
+services:
+  # --- База данных PostgreSQL ---
+  db:
+    image: postgres:15-alpine
+    container_name: ner_project_db_prod
+    volumes:
+      - postgres_data_prod:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    ports:
+      - "5433:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: always
+
+  # --- Сервис Поиска (Production) ---
+  search_service:
+    container_name: search_service_prod
+    build:
+      context: ./search_service
+      dockerfile: Dockerfile # Убедитесь, что в Dockerfile есть CMD для gunicorn
+    # Команда запуска берется из Dockerfile (CMD). Не монтируем volumes.
+    env_file:
+      - .env
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: always
+
+  # --- ML-сервис (NER - Production) ---
+  # Предполагается, что вы создали новый сервис ner_service с Dockerfile,
+  # который использует Gunicorn, как мы обсуждали ранее.
+  ner_service:
+    container_name: ner_service_prod
+    build:
+      context: ./ner_service # <-- ВАЖНО: Указываем на новый, быстрый сервис
+      dockerfile: Dockerfile
+    # Команда запуска берется из Dockerfile (CMD ["gunicorn", ...])
+    env_file:
+      - .env
+    restart: always
+
+  # --- API Gateway (Production) ---
+  api_gateway:
+    container_name: api_gateway_prod
+    build:
+      context: ./api_gateway
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    depends_on:
+      - search_service
+      - ner_service
+    restart: always
+
+volumes:
+  postgres_data_prod:
+    name: ner_project_postgres_data_prod
