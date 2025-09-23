@@ -9,9 +9,8 @@ dependencies = [
     "ipywidgets>=8.1.7",
     "pandas>=2.3.2",
     "pip>=25.2",
-    "setuptools>=80.9.0",
-    "spacy[lookups,transformers]>=3.8.7",
-    "wheel>=0.45.1",
+    "spacy[cuda12x,transformers]>=3.8.7",
+    
     "fastapi>=0.111.0",
     "uvicorn[standard]>=0.29.0",
     "pydantic>=2.7.1"

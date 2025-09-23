@@ -1,7 +1,7 @@
 # Файл, отвечающий за формироване JSON-файла
 
 from typing import List, Dict
-from schemas import ResponseEntity
+from app.schemas import ResponseEntity
 import spacy
 
 nlp = spacy.load("model")
