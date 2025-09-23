@@ -4,21 +4,16 @@
 from pydantic import BaseModel
 from typing import List
 
-# Входящие данные от api_gateway
+# Входящие данные
 class TextInput(BaseModel):
+    """Модель для входящего текстового запроса"""
     text: str
 
-# --- Исходящие данные ---
-class EntityIndex(BaseModel):
+# Исходящие данные
+class ResponseEntity(BaseModel):
+    """Модель ответа в соответствии с ТЗ"""
     start_index: int
     end_index: int
     entity: str
 
-class EntityString(BaseModel):
-    entity_string: str
-    entity_type: str
-
-class ParsedOutput(BaseModel):
-    input: str
-    entities_by_index: List[EntityIndex]
-    entities_by_string: List[EntityString]
+Response = List[ResponseEntity]
