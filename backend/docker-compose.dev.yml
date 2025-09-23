@@ -34,13 +34,13 @@ services:
       db:
         condition: service_healthy # Запустится только после того, как БД будет готова
 
-  # --- ML-сервис (NER) --- ЗАГЛУШКА mock_ner_service
+# --- ML-сервис (NER) --- реальный ml сервис
   ner_service:
     container_name: ner_service
-    build: ./mock_ner_service  # <-- Указываем на нашу заглушку
-    command: poetry run uvicorn app.main:app --host 0.0.0.0 --port 8001 --reload
+    build: ../ml  # <-- Используем настоящий ML-сервис
+    command: uv run uvicorn app.main:app --host 0.0.0.0 --port 8001 --reload
     volumes:
-      - ./mock_ner_service:/app # <-- Монтируем ее код
+      - ../ml:/app # <-- Монтируем код ML-сервиса для hot-reload
     ports:
       - "8001:8001"
     env_file:
