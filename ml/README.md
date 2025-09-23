@@ -15,10 +15,10 @@
 ### configs
 Для Quickstart обучения spacy нужны конфиг файлы.
 Пока только обучение с нуля.
-- config_fixed.cfg - базовая модель для CPU
-- config_transformer.cfg - трансформер для GPU
+- config_cpu.cfg - базовая модель для CPU
+- config_gpu.cfg - трансформер для GPU
 
-Для запуска обучения на gpu команда `uv run python -m spacy train configs/config_transformer.cfg --gpu-id 0 --output ./models`
+Для запуска обучения на gpu команда `uv run python -m spacy train configs/config_gpu.cfg --gpu-id 0 --output ./models`
 Остальное [тут](https://spacy.io/usage/training)
 
 ### Возобновление обучения через sourced components
