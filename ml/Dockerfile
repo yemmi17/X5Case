@@ -1,24 +1,21 @@
-# 1. Используем официальный и легкий образ Python
-FROM python:3.12-slim
-
-# 2. Устанавливаем системные зависимости для сборки пакетов (spaCy их требует)
-RUN apt-get update && apt-get install -y --no-install-recommends build-essential && rm -rf /var/lib/apt/lists/*
-
-# 3. Устанавливаем uv
-COPY --from=ghcr.io/astral-sh/uv:latest /uv /bin/
+FROM ghcr.io/astral-sh/uv:python3.12-bookworm-slim
 
 # 4. Устанавливаем рабочую директорию
 WORKDIR /app
 
-# 5. Копируем файлы с зависимостями
-COPY pyproject.toml uv.lock* ./
+# Enable bytecode compilation
+ENV UV_COMPILE_BYTECODE=1
 
-# 6. Устанавливаем Python-зависимости
-# Добавим --system чтобы uv ставил зависимости в системный python, а не в .venv
-RUN uv pip install --system --no-cache --no-deps -r pyproject.toml
+# Ensure installed tools can be executed out of the box
+ENV UV_TOOL_BIN_DIR=/usr/local/bin
 
-# 7. Скачиваем модель spaCy во время сборки образа
-COPY model ./model
+# Install the project's dependencies using the lockfile and settings
+RUN --mount=type=cache,target=/root/.cache/uv \
+    --mount=type=bind,source=uv.lock,target=uv.lock \
+    --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
+    uv sync --locked --no-install-project --no-dev
 
-# 8. Копируем все ваши Python-файлы в контейнер
-COPY app/ .
+COPY . ./
+
+RUN --mount=type=cache,target=/root/.cache/uv \
+    uv sync --locked --no-dev
