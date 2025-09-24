@@ -1,0 +1,48 @@
+# Байт-код Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Виртуальные окружения
+.venv
+venv/
+env/
+
+# Файлы IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+workspace
+
+# Файлы Poetry
+.poetry/
+
+# Файлы зависимостей и сборки
+.eggs/
+*.egg-info
+dist/
+build/
+wheels/
+*.egg
+/downloads
+/node_modules
+
+# Локальные файлы конфигурации (НИКОГДА не коммить .env с реальными данными)
+.env
+.env.*.local
+
+# Логи и базы данных
+*.log
+*.sql
+*.sqlite3
+
+# Кэш Alembic
+.alembic_cache/
+
+# Файлы операционной системы
+.DS_Store
+Thumbs.db
+
+backend.code-workspace
