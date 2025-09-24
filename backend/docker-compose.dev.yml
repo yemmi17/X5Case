@@ -39,12 +39,12 @@ services:
     container_name: ner_service
     build: ../ml  # <-- Используем настоящий ML-сервис
     command: uv run uvicorn app.main:app --host 0.0.0.0 --port 8001 --reload
-    volumes:
-      - ../ml:/app # <-- Монтируем код ML-сервиса для hot-reload
+    # volumes:
+    #   - ../ml:/app # <-- Монтируем код ML-сервиса для hot-reload
     ports:
       - "8001:8001"
-    env_file:
-      - .env
+    # env_file:
+    #   - .env
 
   # --- API Gateway ---
   api_gateway:
