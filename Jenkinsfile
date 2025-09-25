@@ -31,11 +31,7 @@ pipeline {
                 script {
                     def composeFile = ''
                     if (env.BRANCH_NAME == 'dev' || env.BRANCH_NAME == 'main' || env.IS_MAIN == 'true') {
-                        composeFile = 'backend/docker-compose.prod.yml'
-                    } else if (env.BRANCH_NAME == 'hackathon') {
-                        composeFile = 'backend/docker-compose.hackathon.yml'
-                    } else {
-                        composeFile = 'backend/docker-compose.dev.yml'
+                        composeFile = 'docker-compose.yml'
                     }
 
                     echo "Using compose file: ${composeFile}"
@@ -50,8 +46,8 @@ pipeline {
                     def composeFile = ''
                     if (env.BRANCH_NAME == 'main' || env.IS_MAIN == 'true') {
                         composeFile = 'docker-compose.yml'
+                    }
 
-                        
                     echo "Bringing up services with: ${composeFile}"
                     sh "docker compose -f ${composeFile} up -d | cat"
                     sh "docker compose -f ${composeFile} ps | cat"
