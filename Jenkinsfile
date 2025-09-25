@@ -26,52 +26,35 @@ pipeline {
             }
         }
 
-        stage('Docker Login') {
+        stage('Compose Build') {
             steps {
-                withCredentials([usernamePassword(credentialsId: env.DOCKERHUB_CREDENTIALS_ID, usernameVariable: 'DOCKER_USR', passwordVariable: 'DOCKER_PSW')]) {
-                    sh 'echo "$DOCKER_PSW" | docker login -u "$DOCKER_USR" --password-stdin'
+                script {
+                    def composeFile = ''
+                    if (env.BRANCH_NAME == 'dev' || env.BRANCH_NAME == 'main' || env.IS_MAIN == 'true') {
+                        composeFile = 'backend/docker-compose.prod.yml'
+                    } else if (env.BRANCH_NAME == 'hackathon') {
+                        composeFile = 'backend/docker-compose.hackathon.yml'
+                    } else {
+                        composeFile = 'backend/docker-compose.dev.yml'
+                    }
+
+                    echo "Using compose file: ${composeFile}"
+                    sh "docker compose -f ${composeFile} build --no-cache | cat"
                 }
             }
         }
 
-        stage('Build & Push Images') {
+        stage('Compose Up (detached)') {
             steps {
                 script {
-                    def services = [
-                        [name: 'api-gateway', image: "${env.DOCKERHUB_NAMESPACE}/x5case-api-gateway", context: 'backend/api_gateway', dockerfile: 'Dockerfile'],
-                        [name: 'search-service', image: "${env.DOCKERHUB_NAMESPACE}/x5case-search-service", context: 'backend/search_service', dockerfile: 'Dockerfile'],
-                        [name: 'ner-service', image: "${env.DOCKERHUB_NAMESPACE}/x5case-ner-service", context: 'backend/ner_service', dockerfile: 'Dockerfile'],
-                        [name: 'ml', image: "${env.DOCKERHUB_NAMESPACE}/x5case-ml", context: 'ml', dockerfile: 'Dockerfile']
-                    ]
+                    def composeFile = ''
+                    if (env.BRANCH_NAME == 'main' || env.IS_MAIN == 'true') {
+                        composeFile = 'docker-compose.yml'
 
-                    def stepsForParallel = services.collectEntries { svc ->
-                        [(svc.name): {
-                            stage("Build & Push: ${svc.name}") {
-                                sh """
-                                  set -e
-                                  echo "Building ${svc.image}:${GIT_SHA} from ${svc.context}/${svc.dockerfile}"
-                                  docker build -t ${svc.image}:${GIT_SHA} -f ${svc.context}/${svc.dockerfile} ${svc.context}
-
-                                  # Tag with branch
-                                  docker tag ${svc.image}:${GIT_SHA} ${svc.image}:${GIT_BRANCH_SAFE}
-
-                                  # Optionally tag latest on main
-                                  if [ "${IS_MAIN}" = "true" ]; then
-                                    docker tag ${svc.image}:${GIT_SHA} ${svc.image}:latest
-                                  fi
-
-                                  # Push tags
-                                  docker push ${svc.image}:${GIT_SHA}
-                                  docker push ${svc.image}:${GIT_BRANCH_SAFE}
-                                  if [ "${IS_MAIN}" = "true" ]; then
-                                    docker push ${svc.image}:latest
-                                  fi
-                                """
-                            }
-                        }]
-                    }
-
-                    parallel stepsForParallel
+                        
+                    echo "Bringing up services with: ${composeFile}"
+                    sh "docker compose -f ${composeFile} up -d | cat"
+                    sh "docker compose -f ${composeFile} ps | cat"
                 }
             }
         }
