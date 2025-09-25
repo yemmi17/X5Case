@@ -1,23 +1,20 @@
 FROM ghcr.io/astral-sh/uv:python3.12-bookworm-slim
 
-# 4. Устанавливаем рабочую директорию
 WORKDIR /app
 
-# Enable bytecode compilation
-ENV UV_COMPILE_BYTECODE=1
+# Сначала копируем ТОЛЬКО файлы, отвечающие за зависимости
+COPY pyproject.toml uv.lock ./
 
-# ENV UV_LINK_MODE=copy
-
-# Ensure installed tools can be executed out of the box
-ENV UV_TOOL_BIN_DIR=/usr/local/bin
-
-# Install the project's dependencies using the lockfile and settings
-RUN --mount=type=cache,target=/root/.cache/uv \
-    --mount=type=bind,source=uv.lock,target=uv.lock \
-    --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
-    uv sync --locked --no-install-project --no-dev
-
-COPY . ./
-
+# Устанавливаем зависимости в стандартное виртуальное окружение .venv
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --locked --no-dev
+
+# Теперь копируем остальной код приложения
+COPY . .
+
+# --- ВАЖНО: Добавляем путь к .venv/bin в системный PATH ---
+# Это "активирует" виртуальное окружение для всех последующих команд
+ENV PATH="/app/.venv/bin:$PATH"
+
+# Команда для запуска в PROD. Теперь gunicorn будет найден 100%
+CMD ["gunicorn", "-w", "4", "-k", "uvicorn.workers.UvicornWorker", "app.main:app", "-b", "0.0.0.0:8000"]
