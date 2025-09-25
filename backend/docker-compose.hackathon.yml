@@ -1,0 +1,13 @@
+version: '3.9'
+
+services:
+  ner_service:
+    container_name: ner_service_hackathon
+    build:
+      context: ../ml  # <-- Собираем образ из папки ml
+      dockerfile: Dockerfile
+    # Команда запуска берется из CMD в Dockerfile (там Gunicorn)
+    ports:
+      # Пробрасываем порт 8000 из контейнера на порт 8000 вашего сервера
+      - "8000:8000" 
+    restart: always
