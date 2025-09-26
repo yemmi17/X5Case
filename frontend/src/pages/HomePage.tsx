@@ -5,6 +5,7 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
+import { useGetProductsQuery } from "@/api/productsApi"
 
 // Интерфейс для товара
 interface Product {
@@ -23,6 +24,11 @@ interface Product {
 const HomePage = () => {
     const [selectedCategories, setSelectedCategories] = useState<SelectedCategory[]>([])
     const [searchQuery, setSearchQuery] = useState("")
+
+    // const { data, error, isLoading, refetch } = useGetProductsQuery({ skip: 0, limit: 100 })
+
+    // console.log(data);
+    
 
     // Моковые данные товаров
     const products: Product[] = [
