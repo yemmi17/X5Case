@@ -1,6 +1,7 @@
 import httpx
 from fastapi import FastAPI, HTTPException
 from pydantic_settings import BaseSettings
+from fastapi.middleware.cors import CORSMiddleware
 from .services import parse_ner_response
 
 # Класс для загрузки переменных из .env файла
@@ -14,6 +15,14 @@ ner_service_base_url = settings.ner_service_url
 if not ner_service_base_url.endswith('/api/predict'):
     ner_service_base_url = ner_service_base_url.rstrip('/') + '/api/predict'
 app = FastAPI(title="API Gateway")
+
+# Это список адресов, с которых разрешены запросы.
+# Для разработки мы разрешаем адрес фронтенда и можно добавить другие.
+origins = [
+    "http://localhost",
+    "http://localhost:3000", # <-- Адрес вашего фронтенда
+    # "https://your-production-frontend.com", # В будущем добавите адрес боевого сайта
+]
 
 # --- Основной эндпоинт поиска ---
 @app.get("/api/v1/search")
