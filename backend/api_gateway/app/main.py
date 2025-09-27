@@ -21,6 +21,7 @@ app = FastAPI(title="API Gateway")
 origins = [
     "http://localhost",
     "http://localhost:3000", # <-- Адрес вашего фронтенда
+    "http://localhost:5173",
     # "https://your-production-frontend.com", # В будущем добавите адрес боевого сайта
 ]
 
