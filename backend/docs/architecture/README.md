@@ -47,6 +47,15 @@ cd backend
 docker-compose -f docker-compose.dev.yml up -d
 ```
 
+**Важно:** После запуска контейнеров необходимо применить миграции базы данных:
+```bash
+docker-compose -f docker-compose.dev.yml run --rm \
+  -e POSTGRES_USER=myuser \
+  -e POSTGRES_PASSWORD=mypassword \
+  -e POSTGRES_DB=ner_db \
+  search_service alembic upgrade head
+```
+
 ### Заполнение базы данных
 ```bash
 docker-compose -f docker-compose.dev.yml exec search_service \
