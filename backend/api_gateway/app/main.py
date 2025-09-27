@@ -24,6 +24,14 @@ origins = [
     # "https://your-production-frontend.com", # В будущем добавите адрес боевого сайта
 ]
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"], # Разрешить все методы (GET, POST, и т.д.)
+    allow_headers=["*"], # Разрешить все заголовки
+)
+
 # --- Основной эндпоинт поиска ---
 @app.get("/api/v1/search")
 async def search(
