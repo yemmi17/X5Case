@@ -9,4 +9,3 @@ __pycache__/
 data/
 
 .env
-model/
