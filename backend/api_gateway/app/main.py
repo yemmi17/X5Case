@@ -1,6 +1,8 @@
 import httpx
 from fastapi import FastAPI, HTTPException
 from pydantic_settings import BaseSettings
+from fastapi.middleware.cors import CORSMiddleware
+from .services import parse_ner_response
 
 # Класс для загрузки переменных из .env файла
 class Settings(BaseSettings):
@@ -8,56 +10,68 @@ class Settings(BaseSettings):
     search_service_url: str
 
 settings = Settings()
+# Добавляем /api/predict к URL NER сервиса
+ner_service_base_url = settings.ner_service_url
+if not ner_service_base_url.endswith('/api/predict'):
+    ner_service_base_url = ner_service_base_url.rstrip('/') + '/api/predict'
 app = FastAPI(title="API Gateway")
+
+# Это список адресов, с которых разрешены запросы.
+# Для разработки мы разрешаем адрес фронтенда и можно добавить другие.
+origins = [
+    "http://localhost",
+    "http://localhost:3000", # <-- Адрес вашего фронтенда
+    "http://localhost:5173",
+    # "https://your-production-frontend.com", # В будущем добавите адрес боевого сайта
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"], # Разрешить все методы (GET, POST, и т.д.)
+    allow_headers=["*"], # Разрешить все заголовки
+)
 
 # --- Основной эндпоинт поиска ---
 @app.get("/api/v1/search")
-async def search(q: str):
-    """
-    Основной эндпоинт для сквозного поиска.
-    1. Принимает текстовый запрос `q`.
-    2. Отправляет его в NER-сервис для извлечения сущностей.
-    3. Использует извлеченные сущности для фильтрации в Search-сервисе.
-    4. Возвращает найденные товары.
-    """
-    try:
-        # --- Шаг 1: Идем в NER-сервис ---
-        async with httpx.AsyncClient() as client:
-            ner_response = await client.post(
-                f"{settings.ner_service_url}/extract_entities", 
-                json={"text": q},
-                timeout=5.0  # Устанавливаем таймаут, чтобы не ждать вечно
-            )
-            # Проверяем, что NER-сервис ответил успешно (кодом 2xx)
+async def search(
+    q: str,
+    page: int = 1,
+    size: int = 10
+):
+    async with httpx.AsyncClient() as client:
+        # 1. Получаем сущности от ML-сервиса
+        try:
+            ner_response = await client.post(ner_service_base_url, json={"text": q}, timeout=10.0)
             ner_response.raise_for_status()
-            entities = ner_response.json()
+            ner_data = ner_response.json()
+        except httpx.RequestError as e:
+            raise HTTPException(status_code=503, detail=f"NER service is unavailable: {e}")
 
-        # --- Шаг 2: Формируем параметры для сервиса поиска ---
-        # Убираем пустые значения, чтобы не передавать их в запрос
-        search_params = {k: v for k, v in entities.items() if v}
+        # 2. Парсим BIO-теги в словарь
+        parsed_entities = parse_ner_response(ner_data, q)
         
-        # --- Шаг 3: Идем в Search-сервис с извлеченными параметрами ---
-        async with httpx.AsyncClient() as client:
-            search_response = await client.get(
-                f"{settings.search_service_url}/api/v1/products/",
-                params=search_params,
-                timeout=5.0
-            )
+        # 3. Ищем товары, передавая сущности как фильтры
+        search_params = parsed_entities.copy()
+        # Маппинг сущностей на параметры поиска
+        if 'type' in search_params:
+            search_params['category'] = search_params.pop('type')
+        search_params['page'] = page
+        search_params['size'] = size
+        
+        try:
+            search_response = await client.get(settings.search_service_url, params=search_params, timeout=10.0)
             search_response.raise_for_status()
-            products = search_response.json()
+            products_data = search_response.json()
+        except httpx.RequestError as e:
+            raise HTTPException(status_code=503, detail=f"Search service is unavailable: {e}")
 
-        return products
+    # 4. Собираем финальный ответ для фронтенда
+    # Создаем сущности для ответа фронтенду
+    frontend_entities = [{"entity": key.upper(), "value": value} for key, value in parsed_entities.items()]
 
-    # --- Шаг 4: Обработка возможных ошибок ---
-    except httpx.RequestError as exc:
-        # Ошибка сети (например, сервис недоступен)
-        raise HTTPException(
-            status_code=503, 
-            detail=f"Ошибка при обращении к внутреннему сервису: {exc.request.url}"
-        )
-    except httpx.HTTPStatusError as exc:
-        # Сервис ответил ошибкой (например, 404 или 500)
-        raise HTTPException(
-            status_code=exc.response.status_code,
-            detail=f"Внутренний сервис ответил ошибкой: {exc.response.text}"
-        )
+    return {
+        "entities": frontend_entities,
+        "products": products_data
+    }

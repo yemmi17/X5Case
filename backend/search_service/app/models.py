@@ -12,4 +12,7 @@ class Product(SQLModel, table=True):
     rating: float
     reviews_count: int
     category: str = Field(index=True) # index=True ускоряет фильтрацию по категории
+    brand: Optional[str] = Field(default=None, index=True)
+    volume: Optional[str] = Field(default=None, index=True)
+    percentage: Optional[str] = Field(default=None, index=True)
     in_stock: bool
