@@ -7,7 +7,7 @@ import type {
 export const productsApi = createApi({
     reducerPath: 'productsApi',
     baseQuery: fetchBaseQuery({
-        baseUrl: 'http://localhost:8000/api/v1/',
+        baseUrl: import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api/v1/',
         prepareHeaders: (headers) => {
             headers.set('Content-Type', 'application/json')
             return headers
