@@ -6,7 +6,7 @@ from sqlmodel import Session
 
 from . import crud
 from .database import engine
-from .schemas import PaginatedProductResponse
+from .schemas import PaginatedProductResponse, ProductRead
 
 def get_session():
     with Session(engine) as session:
@@ -36,7 +36,6 @@ def read_products(
         pages=(total + size - 1) // size
     )
 
-
 @app.get("/products/popular", response_model=PaginatedProductResponse)
 def read_popular_products(
     session: Session = Depends(get_session),
@@ -54,3 +53,11 @@ def read_popular_products(
         size=size,
         pages=(total + size - 1) // size
     )
+
+@app.get("/products/{product_id}", response_model=ProductRead)
+def read_product(product_id: int, session: Session = Depends(get_session)):
+    """Возвращает один товар по его ID."""
+    product = crud.get_product_by_id(session=session, product_id=product_id)
+    if not product:
+        raise HTTPException(status_code=404, detail="Product not found")
+    return product

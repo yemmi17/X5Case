@@ -96,3 +96,25 @@ async def get_popular_products(
             return response.json()
         except httpx.RequestError as e:
             raise HTTPException(status_code=503, detail=f"Search service is unavailable: {e}")
+
+
+@app.get("/api/v1/products/{product_id}")
+async def get_product_by_id(product_id: int):
+    """
+    Проксирует запрос к search_service для получения одного товара по ID.
+    """
+    async with httpx.AsyncClient() as client:
+        try:
+            # Обращаемся к эндпоинту в search_service, который уже существует
+            response = await client.get(f"{search_service_base_url}/products/{product_id}", timeout=10.0)
+            
+            # Если search_service вернул 404 (не найдено), пробрасываем эту ошибку
+            if response.status_code == 404:
+                raise HTTPException(status_code=404, detail="Product not found")
+            
+            response.raise_for_status() # Проверяем на другие ошибки (500 и т.д.)
+            
+            return response.json()
+            
+        except httpx.RequestError as e:
+            raise HTTPException(status_code=503, detail=f"Search service is unavailable: {e}")

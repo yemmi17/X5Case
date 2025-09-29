@@ -40,3 +40,9 @@ def get_popular_products(session: Session, skip: int = 0, limit: int = 10):
     products = session.exec(statement.offset(skip).limit(limit)).all()
     
     return products, total_count
+
+
+def get_product_by_id(session: Session, product_id: int):
+    """Получает один товар по его ID."""
+    product = session.get(Product, product_id)
+    return product
