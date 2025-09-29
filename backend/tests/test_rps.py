@@ -1,30 +1,34 @@
 import asyncio
 import time
 import statistics
-from typing import List, Tuple
+import random
+from typing import List, Tuple, Dict
 
 import httpx
 from rich.console import Console
 from rich.table import Table
 
 # --- КОНФИГУРАЦИЯ ТЕСТА ---
-# URL сервиса (для hackathon-compose порт 8000 проброшен на localhost)
-API_URL = "http://46.30.46.219:8000/api/predict"
+# URL вашего сервиса
+API_URL = "http://79.143.29.56:8000/api/predict"
 
 # Целевой запросный поток (RPS) и длительность теста
-TARGET_RPS = 500  # целевые запросы в секунду
+TARGET_RPS = 100  # целевые запросы в секунду
 TEST_DURATION_SEC = 20  # длительность в секундах
 
 # Ограничение одновременных запросов (чтобы не ушли в тысячные в полёте)
-MAX_IN_FLIGHT = 1000
+MAX_IN_FLIGHT = 200
 
 # Максимальное время ожидания ответа отдельного запроса (сек)
 REQUEST_TIMEOUT_SEC = 5.0
 
-# Тестовое тело запроса
-TEST_PAYLOAD = {
-    "text": "Apple is looking at buying U.K. startup for $1 billion"
-}
+# Список тестовых данных для отправки. Для каждого запроса будет выбран случайный.
+TEST_PAYLOADS: List[Dict[str, str]] = [
+    {"input": "сгущенное молоко"},
+    {"input": "инженер-программист из МАИ"},
+    {"input": "Детекция нефтяных пятен на спутниковых снимках"},
+    {"input": ""},  # Тест на пустой ввод
+]
 # -------------------------
 
 console = Console()
@@ -32,18 +36,31 @@ console = Console()
 
 async def send_request(client: httpx.AsyncClient, sem: asyncio.Semaphore, request_id: int) -> Tuple[int, float, bool]:
     """
-    Отправляет один запрос и измеряет время ответа.
+    Отправляет один запрос, измеряет время ответа и валидирует результат.
     Возвращает кортеж: (id запроса, время, успех)
     """
     start = time.perf_counter()
+    payload = random.choice(TEST_PAYLOADS)
+    
     async with sem:
         try:
-            resp = await client.post(API_URL, json=TEST_PAYLOAD, timeout=REQUEST_TIMEOUT_SEC)
+            resp = await client.post(API_URL, json=payload, timeout=REQUEST_TIMEOUT_SEC)
             resp.raise_for_status()
+            
+            # Валидация ответа
+            response_data = resp.json()
+            if not isinstance(response_data, list):
+                raise TypeError(f"Ответ не является списком, получено: {type(response_data)}")
+            if payload["input"] == "" and response_data != []:
+                raise ValueError("Для пустого `input` ответ должен быть пустым списком `[]`")
+
             elapsed = time.perf_counter() - start
             return (request_id, elapsed, True)
-        except Exception:
+        except Exception as e:
+            # Любое исключение (HTTP ошибка, таймаут, ошибка валидации) считается провалом
             elapsed = time.perf_counter() - start
+            # Раскомментируйте для детальной отладки ошибок
+            # console.print(f"[dim red]Запрос #{request_id} провален: {e}[/dim red]")
             return (request_id, elapsed, False)
 
 
@@ -79,6 +96,7 @@ async def run_rps_test():
 
         # Дожидаемся завершения всех запросов
         if tasks:
+            # Собираем результаты пачками, чтобы избежать слишком больших gather
             for chunk_start in range(0, len(tasks), 1000):
                 chunk = tasks[chunk_start:chunk_start + 1000]
                 results.extend(await asyncio.gather(*chunk))
@@ -87,6 +105,7 @@ async def run_rps_test():
 
 
 def percentile(values: List[float], p: float) -> float:
+    """Безопасный расчет перцентиля."""
     if not values:
         return 0.0
     idx = max(0, min(len(values) - 1, int(round((p / 100.0) * (len(values) - 1)))))
@@ -94,6 +113,7 @@ def percentile(values: List[float], p: float) -> float:
 
 
 def analyze_results_rps(results: List[Tuple[int, float, bool]], scheduled: int):
+    """Анализирует и выводит результаты RPS-теста."""
     successes = [r for r in results if r[2]]
     failures = [r for r in results if not r[2]]
     latencies = [r[1] for r in successes]
@@ -112,19 +132,19 @@ def analyze_results_rps(results: List[Tuple[int, float, bool]], scheduled: int):
     table.add_row("Запросов завершено", str(total_completed))
     table.add_row("Успешных", f"[green]{total_success}[/green]")
     table.add_row("Неуспешных", f"[red]{total_failed}[/red]")
-    table.add_row("Достигнутый RPS", f"{achieved_rps:.2f}")
+    table.add_row("Достигнутый RPS", f"{achieved_rps:.2f} (цель: {TARGET_RPS})")
 
     if latencies:
-        table.add_row("Средняя задержка", f"{statistics.mean(latencies):.4f} c")
+        table.add_row("--- Задержки (Latency) ---", "---")
+        table.add_row("Средняя", f"{statistics.mean(latencies):.4f} c")
         table.add_row("Медиана (p50)", f"{percentile(latencies, 50):.4f} c")
         table.add_row("p90", f"{percentile(latencies, 90):.4f} c")
         table.add_row("p95", f"{percentile(latencies, 95):.4f} c")
         table.add_row("p99", f"{percentile(latencies, 99):.4f} c")
+        table.add_row("Макс. задержка", f"{max(latencies):.4f} c")
 
     console.print(table)
 
 
 if __name__ == "__main__":
     asyncio.run(run_rps_test())
-
-
