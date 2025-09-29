@@ -46,7 +46,7 @@ async def search(
     async with httpx.AsyncClient() as client:
         # 1. Получаем сущности от ML-сервиса
         try:
-            ner_response = await client.post(ner_service_base_url, json={"text": q}, timeout=10.0)
+            ner_response = await client.post(ner_service_base_url, json={"input": q}, timeout=10.0)
             ner_response.raise_for_status()
             ner_data = ner_response.json()
         except httpx.RequestError as e:
