@@ -4,6 +4,7 @@ pipeline {
     environment {
         DOCKERHUB_NAMESPACE = 'yemmi1'
         DOCKERHUB_CREDENTIALS_ID = 'dockerhub-token'
+        SERVER_IP = '45.8.251.196'
     }
 
     stages {
