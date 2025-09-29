@@ -33,12 +33,18 @@ pipeline {
             steps {
                 script {
                     withCredentials([string(credentialsId: env.DOCKERHUB_CREDENTIALS_ID, variable: 'DOCKERHUB_TOKEN')]) {
-                        sh 'echo $DOCKERHUB_TOKEN | docker login -u ' + env.DOCKERHUB_NAMESPACE + ' --password-stdin | cat'
+                        sh '''
+                            echo "DockerHub namespace: ${DOCKERHUB_NAMESPACE}"
+                            echo "Token length: ${#DOCKERHUB_TOKEN}"
+                            echo "First 10 chars of token: ${DOCKERHUB_TOKEN:0:10}"
+                            docker login -u ${DOCKERHUB_NAMESPACE} --password-stdin <<< "${DOCKERHUB_TOKEN}"
+                            echo "Docker login exit code: $?"
+                        ''' 
                     }
                 }
             }
         }
-
+ 
         stage('Build Frontend') {
             steps {
                 sh "docker build -t ${DOCKERHUB_NAMESPACE}/x5case-frontend:${IMAGE_TAG} -t ${DOCKERHUB_NAMESPACE}/x5case-frontend:${LATEST_TAG} ./frontend | cat"
