@@ -32,7 +32,7 @@ pipeline {
         stage('Docker Login') {
             steps {
                 script {
-                    withCredentials([string(credentialsId: env.DOCKERHUB_CREDENTIALS_ID, variable: 'DOCKERHUB_TOKEN')]) {
+                    withCredentials([usernamePassword(credentialsId: 'dockerhub-token', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
                         sh '''
                             echo "DockerHub namespace: ${DOCKERHUB_NAMESPACE}"
                             echo "Token length: ${#DOCKERHUB_TOKEN}"
