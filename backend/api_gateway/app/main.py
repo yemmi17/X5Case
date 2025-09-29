@@ -14,6 +14,9 @@ settings = Settings()
 ner_service_base_url = settings.ner_service_url
 if not ner_service_base_url.endswith('/api/predict'):
     ner_service_base_url = ner_service_base_url.rstrip('/') + '/api/predict'
+
+search_service_base_url = settings.search_service_url.rstrip('/')
+
 app = FastAPI(title="API Gateway")
 
 # Это список адресов, с которых разрешены запросы.
@@ -61,7 +64,7 @@ async def search(
         search_params['size'] = size
         
         try:
-            search_response = await client.get(settings.search_service_url, params=search_params, timeout=10.0)
+            search_response = await client.get(f"{search_service_base_url}/", params=search_params, timeout=10.0)
             search_response.raise_for_status()
             products_data = search_response.json()
         except httpx.RequestError as e:
@@ -75,3 +78,21 @@ async def search(
         "entities": frontend_entities,
         "products": products_data
     }
+
+
+@app.get("/api/v1/products/popular")
+async def get_popular_products(
+    page: int = 1,
+    size: int = 10
+):
+    """
+    Проксирует запрос к search_service для получения популярных товаров.
+    """
+    async with httpx.AsyncClient() as client:
+        try:
+            search_params = {'page': page, 'size': size}
+            response = await client.get(f"{search_service_base_url}/products/popular", params=search_params, timeout=10.0)
+            response.raise_for_status()
+            return response.json()
+        except httpx.RequestError as e:
+            raise HTTPException(status_code=503, detail=f"Search service is unavailable: {e}")

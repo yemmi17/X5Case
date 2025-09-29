@@ -35,3 +35,22 @@ def read_products(
         size=size,
         pages=(total + size - 1) // size
     )
+
+
+@app.get("/products/popular", response_model=PaginatedProductResponse)
+def read_popular_products(
+    session: Session = Depends(get_session),
+    page: int = Query(1, ge=1),
+    size: int = Query(10, ge=1, le=100)
+):
+    """Возвращает список самых популярных товаров с пагинацией."""
+    skip = (page - 1) * size
+    products, total = crud.get_popular_products(session=session, skip=skip, limit=size)
+    
+    return PaginatedProductResponse(
+        items=products,
+        total=total,
+        page=page,
+        size=size,
+        pages=(total + size - 1) // size
+    )

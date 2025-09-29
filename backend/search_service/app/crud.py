@@ -28,3 +28,15 @@ def get_products(session: Session, skip: int = 0, limit: int = 10, **filters):
     products = session.exec(statement.offset(skip).limit(limit)).all()
     
     return products, total_count
+
+def get_popular_products(session: Session, skip: int = 0, limit: int = 10):
+    """Получает товары, отсортированные по убыванию рейтинга."""
+    statement = select(Product).order_by(Product.rating.desc())
+    
+    # Считаем общее количество
+    total_count = session.exec(select(func.count()).select_from(statement.subquery())).one()
+
+    # Применяем пагинацию
+    products = session.exec(statement.offset(skip).limit(limit)).all()
+    
+    return products, total_count
