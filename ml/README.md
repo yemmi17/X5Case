@@ -1,7 +1,7 @@
 ## Начало работы
 0) установить uv
 1) `cd ml`
-2) `uv sync`
+2) `uv sync --group dev`
 3) для входа в venv команда `.venv\Scripts\activate` или выбрать в vscode при запуске
 
 ## Training
