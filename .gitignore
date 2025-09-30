@@ -33,12 +33,6 @@ wheels/
 .env
 .env.*.local
 
-# Модели ML (слишком большие для git)
-ml/model/
-*.bin
-*.pkl
-*.h5
-*.onnx
 
 # Логи и базы данных
 *.log
