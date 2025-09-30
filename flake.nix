@@ -5,30 +5,34 @@
     # Основной nixpkgs 25.05
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
 
+    # Конкретный коммит с Python 3.12.9
+    nixpkgs-python.url = "github:NixOS/nixpkgs/3e2cf88148e732abc1d259286123e06a9d8c964a";
+
     flake-utils.url = "github:numtide/flake-utils";
   };
 
-  outputs = { self, nixpkgs, flake-utils }:
+  outputs = { self, nixpkgs, nixpkgs-python, flake-utils }:
     flake-utils.lib.eachDefaultSystem (system:
       let
         # Основные пакеты из nixpkgs 25.05
         pkgs = nixpkgs.legacyPackages.${system};
 
-        # Python environment
-       python = pkgs.python312.overrideAttrs (oldAttrs: {
-          version = "3.12.9";
-          src = pkgs.fetchurl {
-            url = "https://www.python.org/ftp/python/3.12.9/Python-3.12.9.tar.xz";
-            sha256 = "04hiz3rji39b613zjx4666jaq2jqykgshhlqdq07rcwhkxfq683j";
-          };
-          # при необходимости добавьте патчи или зависимости
-        });
+        # Python 3.12.9 из конкретного коммита
+        pkgs-python = nixpkgs-python.legacyPackages.${system};
+
+        # Создаем окружение с Python 3.12.9 и необходимыми пакетами
+        pythonEnv = pkgs-python.python312.withPackages (ps: with ps; [
+          pip
+          setuptools
+          wheel
+          # Добавьте сюда другие Python пакеты если нужны
+        ]);
       in
       {
         devShells.default = pkgs.mkShell {
           buildInputs = [
             # Python 3.12.9 из конкретного коммита
-            python
+            pythonEnv
 
             # uv из стабильной ветки 25.05
             pkgs.uv
@@ -49,7 +53,7 @@
             echo "Docker Compose version: $(docker-compose --version)"
 
             # Настраиваем uv для использования конкретного Python
-            export UV_PYTHON=${python}/bin/python
+            export UV_PYTHON=${pythonEnv}/bin/python
             export UV_PYTHON_PREFERENCE="only-system"
 
             # Создаем .venv если его нет
