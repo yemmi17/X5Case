@@ -14,4 +14,20 @@ prod = [
     "pydantic>=2.7.1",
     "spacy>=3.8.7",
 ]
-dev = ["spacy[cuda12x,transformers]>=3.8.7"]
+dev = [
+    "spacy[cuda12x,transformers]>=3.8.7",
+    "torch>=2.7.1",
+]
+
+[tool.uv.sources]
+torch = { index = "pytorch-gpu" }
+
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true
+
+[[tool.uv.index]]
+name = "pytorch-gpu"
+url = "https://download.pytorch.org/whl/cu118"
+explicit = true
