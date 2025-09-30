@@ -10,8 +10,7 @@ RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --locked --no-dev --group prod
 
 # Теперь копируем код и модель
-COPY app/ ./app/
-COPY model/ ./app/
+COPY . .
 
 # --- ВАЖНО: Добавляем путь к .venv/bin в системный PATH ---
 # Это "активирует" виртуальное окружение для всех последующих команд
