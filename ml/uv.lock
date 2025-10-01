@@ -1632,7 +1632,7 @@ prod = [
     { name = "fastapi" },
     { name = "gunicorn" },
     { name = "pydantic" },
-    { name = "spacy" },
+    { name = "spacy", extra = ["transformers"] },
     { name = "uvicorn", extra = ["standard"] },
 ]
 
@@ -1651,6 +1651,6 @@ prod = [
     { name = "fastapi", specifier = ">=0.111.0" },
     { name = "gunicorn", specifier = ">=23.0.0" },
     { name = "pydantic", specifier = ">=2.7.1" },
-    { name = "spacy", specifier = ">=3.8.7" },
+    { name = "spacy", extras = ["transformers"], specifier = ">=3.8.7" },
     { name = "uvicorn", extras = ["standard"], specifier = ">=0.29.0" },
 ]
