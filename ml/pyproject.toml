@@ -4,14 +4,34 @@ version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
 requires-python = "==3.12.9"
-dependencies = [
+dependencies = []
+
+[dependency-groups]
+prod = [
+    "gunicorn>=23.0.0",
     "fastapi>=0.111.0",
     "uvicorn[standard]>=0.29.0",
     "pydantic>=2.7.1",
-    "spacy[transformers]>=3.8.7",
-    "gunicorn>=23.0.0",
-    "torch>=2.8.0",
+    "spacy>=3.8.7",
+]
+dev = [
+    "ipykernel>=6.30.1",
+    "numpy>=1.26.3",
+    "pandas>=2.3.3",
+    "pip>=25.2",
+    "spacy[cuda12x,transformers]>=3.8.7",
+    "torch>=2.7.1",
 ]
 
+[tool.uv.sources]
+torch = { index = "pytorch-gpu" }
+
 [[tool.uv.index]]
+name = "pytorch-cpu"
 url = "https://download.pytorch.org/whl/cpu"
+explicit = true
+
+[[tool.uv.index]]
+name = "pytorch-gpu"
+url = "https://download.pytorch.org/whl/cu118"
+explicit = true

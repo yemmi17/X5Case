@@ -7,9 +7,9 @@ COPY pyproject.toml uv.lock ./
 
 # Устанавливаем зависимости в стандартное виртуальное окружение .venv
 RUN --mount=type=cache,target=/root/.cache/uv \
-    uv sync --locked --no-dev
+    uv sync --locked --no-dev --group prod
 
-# Теперь копируем остальной код приложения
+# Теперь копируем код и модель
 COPY . .
 
 # --- ВАЖНО: Добавляем путь к .venv/bin в системный PATH ---

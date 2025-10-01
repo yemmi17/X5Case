@@ -168,6 +168,91 @@ return {
 }
 ```
 
+### GET /api/v1/products/{product_id}
+
+Эндпоинт для получения одного товара по его ID через API Gateway. Проксирует запрос в Search Service: `GET {SEARCH_SERVICE_URL}/products/{product_id}`.
+
+#### Параметры пути
+- `product_id` (int, обязательный) — идентификатор товара
+
+#### Пример запроса
+```bash
+curl -X GET "http://localhost:8000/api/v1/products/84"
+```
+
+#### Логика
+- Gateway делает запрос: `GET {SEARCH_SERVICE_URL}/products/{product_id}`
+- При `404` от Search Service пробрасывается `404 Product not found`
+- При сетевой ошибке — `503 Search service is unavailable`
+
+#### Примеры ответов
+- 200 OK
+```json
+{
+  "id": 84,
+  "name": "Молоко Домик в деревне 3.2%",
+  "price": 99.9,
+  "image_url": "...",
+  "rating": 4.8,
+  "reviews_count": 120,
+  "category": "молочные продукты",
+  "brand": "Домик в деревне",
+  "volume": "950мл",
+  "percentage": "3.2%",
+  "in_stock": true
+}
+```
+
+- 404 Not Found
+```json
+{ "detail": "Product not found" }
+```
+
+
+### GET /api/v1/products/popular
+
+Эндпоинт для получения популярных товаров с пагинацией через API Gateway. Проксирует запрос в Search Service: `GET {SEARCH_SERVICE_URL}/products/popular`.
+
+#### Параметры запроса
+- `page` (int, опциональный, по умолчанию 1)
+- `size` (int, опциональный, по умолчанию 10)
+
+#### Пример запроса
+```bash
+curl -X GET "http://localhost:8000/api/v1/products/popular?page=1&size=5"
+```
+
+#### Логика
+- Gateway формирует `params = { page, size }`
+- Делает запрос: `GET {SEARCH_SERVICE_URL}/products/popular`
+- Возвращает ответ Search Service как есть
+- При сетевой ошибке — `503 Search service is unavailable`
+
+#### Пример ответа
+```json
+{
+  "items": [
+    {
+      "id": 89,
+      "name": "Coca-Cola Classic",
+      "price": 150.0,
+      "image_url": "...",
+      "rating": 5.0,
+      "reviews_count": 250,
+      "category": "напитки",
+      "brand": "Coca-Cola",
+      "volume": "2л",
+      "in_stock": true
+    }
+    // ...
+  ],
+  "total": 13,
+  "page": 1,
+  "size": 5,
+  "pages": 3
+}
+```
+
 ## Обработка ошибок
 
 ### Ошибки NER Service

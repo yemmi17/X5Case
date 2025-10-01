@@ -33,6 +33,7 @@ wheels/
 .env
 .env.*.local
 
+
 # Логи и базы данных
 *.log
 *.sql
