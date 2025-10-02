@@ -16,6 +16,8 @@
 - 🚀 **Микросервисная архитектура**: Масштабируемое решение с разделением ответственности
 - 📱 **API для мобильного приложения**: Готовый интерфейс для интеграции
 
+### Презентация проекта
+
 <details>
   <summary>Показать слайды презентации</summary>
   
@@ -27,6 +29,21 @@
   </p>
   <p align="center">
     <img src="presentation/slide_3.png" width="60%" alt="Slide 3">
+  </p>
+  <p align="center">
+    <img src="presentation/slide_4.png" width="60%" alt="Slide 3">
+  </p>
+  <p align="center">
+    <img src="presentation/slide_5.png" width="60%" alt="Slide 3">
+  </p>
+  <p align="center">
+    <img src="presentation/slide_6.png" width="60%" alt="Slide 3">
+  </p>
+  <p align="center">
+    <img src="presentation/slide_7.png" width="60%" alt="Slide 3">
+  </p>
+  <p align="center">
+    <img src="presentation/slide_8.png" width="60%" alt="Slide 3">
   </p>
 </details>
 
