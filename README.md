@@ -29,20 +29,57 @@
 
 ## Быстрый запуск
 
-### Режим хакатона (только ML)
-Для демонстрации возможностей машинного обучения:
+### Режим хакатона (только ML-сервис NER)
+Этот режим поднимает только ML-сервис извлечения сущностей (NER) на порту 8000.
 
+1) Предварительные требования
+- Установлен Docker и Docker Compose
+  - Docker 24+ / Docker Desktop 4.31+ (или совместимая версия)
+  - Docker Compose v2 (команда `docker compose`) или v1 (`docker-compose`)
+- Открыт порт 8000 на вашей машине
+
+2) Клонирование репозитория
 ```bash
-cd backend
-docker-compose -f docker-compose.hackathon.yml up -d
+git clone https://github.com/<your-org-or-user>/X5Case.git
+cd X5Case
 ```
 
-**Тестирование:**
+3) Запуск сервиса (фоново)
+```bash
+cd backend
+docker-compose -f docker-compose.hackathon.yml up -d --build
+```
+- Первым запуском образ ML-сервиса соберётся из каталога `ml/`.
+- Контейнер: `ner_service_hackathon`. Порт: `8000` (хост) → `8000` (контейнер).
+
+4) Просмотр логов (опционально)
+```bash
+docker-compose -f docker-compose.hackathon.yml logs -f
+```
+
+5) Проверка готовности API
+Подождите 5–15 секунд после старта и выполните запрос:
 ```bash
 curl -X POST "http://localhost:8000/api/predict" \
   -H "Content-Type: application/json" \
   -d '{"text": "coca-cola 1.5л"}'
 ```
+Ожидаемый ответ: JSON со списком извлечённых сущностей (например, BRAND и VOLUME).
+
+6) Остановка и очистка
+- Остановить контейнеры:
+```bash
+docker-compose -f docker-compose.hackathon.yml down
+```
+- Полная очистка с удалением собранных образов (опционально):
+```bash
+docker-compose -f docker-compose.hackathon.yml down --rmi local --volumes --remove-orphans
+```
+
+7) Частые проблемы и решения
+- Порт 8000 занят: остановите процесс, занимающий порт, либо измените маппинг порта в `backend/docker-compose.hackathon.yml` (например, `- "8001:8000"`) и обращайтесь к `http://localhost:8001`.
+- Медленная сборка образа: это нормально при первом запуске. Повторные запуски будут быстрее за счёт кеша.
+- Проблемы с сетью при загрузке зависимостей: перезапустите команду запуска после восстановления сети.
 
 ### Режим разработки (полная система)
 Для демонстрации полного функционала с поиском товаров:
